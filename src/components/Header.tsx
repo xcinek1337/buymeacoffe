@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 
-import { faMugHot, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faMugHot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signIn, signOut } from 'next-auth/react';
 import { Session } from 'next-auth';
@@ -11,6 +11,7 @@ import Image from 'next/image';
 export default function Header({ session }: { session: Session | null }) {
 	const name = session?.user?.name || '';
 	const { first: firstName } = parseFullName(name);
+	const tmpUsername = session?.user?.email!
 
 	return (
 		<header className='mb-16'>
@@ -33,8 +34,7 @@ export default function Header({ session }: { session: Session | null }) {
 					<div className='flex gap-4'>
 						{session && (
 							<div>
-								<button
-									onClick={() => signOut()}
+								<Link href={`/profile`}
 									className='flex items-center gap-2 bg-yellow-300 rounded-full p-1 pr-4'
 								>
 									<Image
@@ -45,7 +45,7 @@ export default function Header({ session }: { session: Session | null }) {
 										className='rounded-full'
 									/>
 									{firstName}
-								</button>
+								</Link>
 							</div>
 						)}
 
