@@ -6,6 +6,7 @@ import { AuthOptions } from 'next-auth';
 export const authOptions = {
 	providers: [
 		GoogleProvider({
+			allowDangerousEmailAccountLinking: true,
 			clientId: process.env.GOOGLE_CLIENT_ID!,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
 		}),
