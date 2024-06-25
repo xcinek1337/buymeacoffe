@@ -1,54 +1,24 @@
 'use server';
+
+import ProfileInfoForm from '@/components/ProfileInfoForm';
+import { authOptions } from '@/lib/authOptions';
+import { ProfileInfoModel } from '@/models/ProfileInfo';
+import mongoose from 'mongoose';
+import { getServerSession } from 'next-auth';
+
 export default async function ProfilePage() {
+	const session = await getServerSession(authOptions);
+	if (!session || !session.user?.email) {
+		return 'not logged in';
+	}
+
+	const email = session.user?.email;
+	await mongoose.connect(process.env.MONGODB_URI!);
+	const profileInfoDoc = JSON.parse(JSON.stringify(await ProfileInfoModel.findOne({ email })))
+
 	return (
 		<div className='max-w-2xl mx-auto px-4'>
-			<div className='bg-gray-200 p-4 rounded-lg'>
-				<div className='bg-gray-300 size-24 rounded-full p-4'>avatar</div>
-				<div>cover img</div>
-			</div>
-
-			<div>
-				<label
-					className='block mt-4'
-					htmlFor='usernameIn'
-				>
-					username
-				</label>
-				<input
-					id='usernameIn'
-					type='text'
-					placeholder='username'
-				/>
-			</div>
-			<div>
-				<label
-					className='block mt-4'
-					htmlFor='displayNameIn'
-				>
-					display name
-				</label>
-				<input
-					id='displayNameIn'
-					type='text'
-					placeholder='display name'
-				/>
-			</div>
-			<div>
-				<label
-					className='block mt-4'
-					htmlFor='bioIn'
-				>
-					BIO
-				</label>
-				<textarea
-					name=''
-					placeholder='bio'
-					id='bioIn'
-				></textarea>
-			</div>
-			<div>
-				<button className="mt-4 bg-yellow-300 px-4 py-2 rounded-lg">Save profile</button>
-			</div>
+			<ProfileInfoForm profileInfo={profileInfoDoc} />
 			<div>donations list....</div>
 		</div>
 	);
