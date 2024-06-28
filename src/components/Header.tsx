@@ -14,7 +14,7 @@ export default function Header({ session }: { session: Session | null }) {
 	const tmpUsername = session?.user?.email!
 
 	return (
-		<header className='mb-16'>
+		<header>
 			<div className='flex justify-between max-w-2xl px-4 py-4 mx-auto'>
 				<Link
 					className='inline-flex items-center gap-1'
