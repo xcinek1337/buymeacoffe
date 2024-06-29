@@ -1,4 +1,5 @@
 'use server';
+import DonationForm from '@/components/DonationForm';
 import { ProfileInfo, ProfileInfoModel } from '@/models/ProfileInfo';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -39,9 +40,26 @@ export default async function SingleProfilePage({ params }: Props) {
 							className='size-36 object-cover object-center'
 						/>
 					</div>
-					<div>
-						<h1>{profileInfoDoc.displayName}</h1>
-						<h2><FontAwesomeIcon icon={faCoffee} />/{profileInfoDoc.username}</h2>
+					<div className='mb-1'>
+						<h1 className='text-4xl font-semibold'>{profileInfoDoc.displayName}</h1>
+						<h2 className='flex gap-1 items-center '>
+							<FontAwesomeIcon icon={faCoffee} />
+							<span>/</span>
+							<span>{profileInfoDoc.username}</span>
+						</h2>
+					</div>
+				</div>
+				<div className='grid grid-cols-2 gap-4 mt-4'>
+					<div className='bg-white rounded-xl p-4 shadow-sm'>
+						<h3 className='font-semibold'>About {profileInfoDoc.username}</h3>
+						<p>{profileInfoDoc.bio}</p>
+						<hr className='my-4'/>
+						<h3 className='font-semibold'>Recent supporeters</h3>
+						<p>no recent donations</p>
+					</div>
+					<div className='bg-white rounded-xl p-4 shadow-sm'>
+						<DonationForm />
+
 					</div>
 				</div>
 			</div>
