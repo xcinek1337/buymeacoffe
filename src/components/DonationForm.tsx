@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 export default function DonationForm() {
 	const [numberInValue, setNumberInValue] = useState('');
 	const [amount, setAmount] = useState(1);
+	const [crypto, setCrypto] = useState('BTC');
 
 	useEffect(() => {
 		if (numberInValue) {
@@ -71,8 +72,34 @@ export default function DonationForm() {
 					name=''
 					placeholder='Say something nice'
 					id=''
-				></textarea>
-                <button className='font-semibold bg-yellow-300 w-full rounded-xl py-2'>Support ${amount *3}</button>
+				/>
+				<div className='flex gap-1 '>
+					<button
+						type='button'
+						onClick={() => setCrypto('BTC')}
+						className={'crypto ' + (crypto === 'BTC' ? 'active' : '')}
+					>
+						<span>BTC</span>
+						<p>Bitcoin</p>
+					</button>
+					<button
+						type='button'
+						onClick={() => setCrypto('ETH')}
+						className={'crypto ' + (crypto === 'ETH' ? 'active' : '')}
+					>
+						<span>ETH</span>
+						<p>Ethereum</p>
+					</button>
+					<button
+						type='button'
+						onClick={() => setCrypto('LTC')}
+						className={'crypto ' + (crypto === 'LTC' ? 'active' : '')}
+					>
+						<span>LTC</span>
+						<p>Litecoin</p>
+					</button>
+				</div>
+				<button className='font-semibold bg-yellow-300 w-full rounded-xl py-2'>Support ${amount * 3}</button>
 			</div>
 		</form>
 	);
