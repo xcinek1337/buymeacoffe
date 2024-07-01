@@ -1,9 +1,9 @@
 'use server';
+
 import DonationForm from '@/components/DonationForm';
 import { ProfileInfo, ProfileInfoModel } from '@/models/ProfileInfo';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import mongoose from 'mongoose';
 import Image from 'next/image';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 };
 export default async function SingleProfilePage({ params }: Props) {
 	const username = params.username;
-	await mongoose.connect(process.env.MONGODB_URI!);
+	
 	const profileInfoDoc: ProfileInfo | null = await ProfileInfoModel.findOne({ username });
 
 	if (!profileInfoDoc) {
@@ -53,13 +53,12 @@ export default async function SingleProfilePage({ params }: Props) {
 					<div className='bg-white rounded-xl p-4 shadow-sm'>
 						<h3 className='font-semibold'>About {profileInfoDoc.username}</h3>
 						<p>{profileInfoDoc.bio}</p>
-						<hr className='my-4'/>
+						<hr className='my-4' />
 						<h3 className='font-semibold'>Recent supporeters</h3>
 						<p>no recent donations</p>
 					</div>
 					<div className='bg-white rounded-xl p-4 shadow-sm'>
-						<DonationForm />
-
+						<DonationForm email={profileInfoDoc.email} />
 					</div>
 				</div>
 			</div>

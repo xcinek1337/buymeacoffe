@@ -1,6 +1,6 @@
 export default function Home() {
 	return (
-		<section className='max-w-lg mx-auto text-center'>
+		<section className='max-w-lg mt-6 mx-auto text-center'>
 			<h1 className='text-6xl font-bold'>
 				Found your <br />
 				creative work

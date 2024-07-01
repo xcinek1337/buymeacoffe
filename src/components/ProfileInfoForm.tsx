@@ -26,22 +26,26 @@ export default function ProfileInfoForm({ profileInfo }: Props) {
 	return (
 		<form action={handleFormAction}>
 			<div className='relative border bg-gray-100 rounded-lg h-48 mb-4'>
-				<Image
-					src={coverUrl || ''}
-					alt='cover image'
-					width={1024}
-					height={1024}
-					className='w-full h-48 object-cover object-center rounded-lg'
-				/>
+				{coverUrl && (
+					<Image
+						src={coverUrl}
+						alt='cover image'
+						width={1024}
+						height={1024}
+						className='w-full h-48 object-cover object-center rounded-lg'
+					/>
+				)}
 				<div className='absolute left-4 -bottom-4 z-10 border bg-gray-100 size-24 rounded-lg'>
-					<div className='rounded-lg size-24 overflow-hidden'>
-						<Image
-							src={avatarUrl || ''}
-							alt='avatar'
-							width={120}
-							height={120}
-						/>
-					</div>
+					{avatarUrl && (
+						<div className='rounded-lg size-24 overflow-hidden'>
+							<Image
+								src={avatarUrl}
+								alt='avatar'
+								width={120}
+								height={120}
+							/>
+						</div>
+					)}
 					<div className='absolute -bottom-2 -right-2'>
 						<UploadButton onUploadComplete={setAvatarUrl} />
 					</div>

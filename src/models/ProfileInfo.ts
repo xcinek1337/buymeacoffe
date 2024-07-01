@@ -1,3 +1,4 @@
+import { Donation } from '@/models/Donation';
 import { model, models, Schema } from 'mongoose';
 
 export type ProfileInfo = {
@@ -7,6 +8,7 @@ export type ProfileInfo = {
 	bio: string;
 	avatarUrl: string;
 	coverUrl: string;
+	donations: Donation[];
 };
 
 const profileInfoSchema = new Schema<ProfileInfo>(
@@ -17,6 +19,7 @@ const profileInfoSchema = new Schema<ProfileInfo>(
 		bio: { type: String },
 		avatarUrl: { type: String },
 		coverUrl: { type: String },
+		donations: [],
 	},
 	{ timestamps: true }
 );

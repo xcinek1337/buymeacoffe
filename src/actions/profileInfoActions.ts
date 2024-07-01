@@ -17,10 +17,10 @@ export async function saveProfile(formData: FormData) {
 	const profileInfoDoc = await ProfileInfoModel.findOne({ email });
 
 	if (profileInfoDoc) {
-		profileInfoDoc.set({ username, displayName, bio, coverUrl, avatarUrl });
+		profileInfoDoc.set({ username, displayName, bio, coverUrl, avatarUrl, donations: ['haha'] });
 		await profileInfoDoc.save();
 	} else {
-		await ProfileInfoModel.create({ username, displayName, bio, email, coverUrl, avatarUrl });
+		await ProfileInfoModel.create({ username, displayName, bio, email, coverUrl, avatarUrl, donations: ['kkkk'] });
 	}
 
 	return true;
