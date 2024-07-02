@@ -10,6 +10,7 @@ export default function DonationForm({ email }: { email: string }) {
 	const [numberInValue, setNumberInValue] = useState('');
 	const [amount, setAmount] = useState(1);
 	const [confirmationSupp, setConfirmationSupp] = useState(false);
+	const [idDonation, setIdDonation] = useState('');
 
 	useEffect(() => {
 		if (numberInValue) {
@@ -24,10 +25,9 @@ export default function DonationForm({ email }: { email: string }) {
 
 	async function handleFormSubmit(formData: FormData) {
 		formData.set('amount', amount.toString());
-		const url = await createDonation(formData,email);
-		// if(window && window.location){
-		// 	window.location.href = url
-		// }
+		formData.set('donateOwner', email);
+		const createAndId = await createDonation(formData);
+		setIdDonation(createAndId);
 		setConfirmationSupp(true);
 	}
 
@@ -77,6 +77,7 @@ export default function DonationForm({ email }: { email: string }) {
 				</div>
 				<div className='flex flex-col mt-2 gap-2'>
 					<input
+						required={true}
 						name='name'
 						type='text'
 						placeholder='Your Name'
@@ -93,6 +94,7 @@ export default function DonationForm({ email }: { email: string }) {
 			{confirmationSupp && (
 				<div className='absolute left-0 p-4 w-full mt-4'>
 					<Stripe
+						idDonation={idDonation}
 						amount={amount}
 					/>
 				</div>

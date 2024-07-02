@@ -15,11 +15,9 @@ type Props = { profileInfo: ProfileInfo | null };
 export default function ProfileInfoForm({ profileInfo }: Props) {
 	const [coverUrl, setCoverUrl] = useState(profileInfo?.coverUrl);
 	const [avatarUrl, setAvatarUrl] = useState(profileInfo?.avatarUrl);
-	console.log('hi');
 
 	async function handleFormAction(formData: FormData) {
 		await saveProfile(formData);
-
 		toast.success('Profile saved!');
 	}
 

@@ -10,7 +10,7 @@ if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
 }
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
-export default function Stripe({ amount }: { amount: number}) {
+export default function Stripe({ amount, idDonation }: { amount: number; idDonation: string }) {
 	return (
 		<main className='max-w-6xl mx-auto p-10 text-white text-center border m-10 rounded-md bg-gradient-to-tr from-red-400 to-yellow-200'>
 			<div className='mb-10'>
@@ -28,10 +28,7 @@ export default function Stripe({ amount }: { amount: number}) {
 					currency: 'usd',
 				}}
 			>
-				<CheckoutPage
-					
-					amount={amount * 3}
-				/>
+				<CheckoutPage idDonation={idDonation} amount={amount * 3} />
 			</Elements>
 		</main>
 	);
