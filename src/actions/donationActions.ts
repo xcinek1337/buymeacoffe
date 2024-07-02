@@ -1,36 +1,34 @@
+'use server';
+
 import { DonationModel } from '@/models/Donation';
-import { ProfileInfoModel } from '@/models/ProfileInfo';
-import mongoose from 'mongoose';
-const { MONGODB_URI } = process.env;
 
-export async function createDonation(formData: FormData, email: string): Promise<string | false> {
+export async function createDonation(formData: FormData): Promise<string> {
+	const { amount, name, message, donateOwner } = Object.fromEntries(formData);
+
 	try {
-		await mongoose.connect(MONGODB_URI!);
-
-		const { amount, name, message } = Object.fromEntries(formData);
-
-		let profileInfoDoc = await ProfileInfoModel.findOne({ email });
-
-		if (!profileInfoDoc) {
-			throw new Error(`Nie znaleziono profilu użytkownika dla email: ${email}`);
-		}
-
-		const donationData = {
-			amount,
-			name,
-			message,
-			paid: false,
-		};
-
-		const donationDoc = await DonationModel.create(donationData);
-		profileInfoDoc.donations.push(donationDoc);
-		await profileInfoDoc.save();
-
-		mongoose.disconnect();
-
-		return 'Darowizna została pomyślnie utworzona.';
+		const donation = await DonationModel.create({ donateOwner, name, amount, message, paid: false });
+		const id = donation._id.toString();
+		console.log('Donation ID:', id);
+		return id;
 	} catch (error) {
-		console.error('Błąd podczas tworzenia darowizny:', error);
+		console.error('donation creating error:', error);
+		return '';
+	}
+}
+
+export async function donationPaidSuccessfully(donationId: string): Promise<boolean> {
+	try {
+		const donation = await DonationModel.findById(donationId);
+		if (donation) {
+			donation.paid = true;
+			await donation.save();
+			return true;
+		} else {
+			console.error('donation doesnt exist');
+			return false;
+		}
+	} catch (error) {
+		console.error('error during updating status payment:', error);
 		return false;
 	}
 }
