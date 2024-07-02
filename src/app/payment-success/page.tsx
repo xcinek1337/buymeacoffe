@@ -1,10 +1,14 @@
+import { donationPaidSuccessfully } from '@/actions/donationActions';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
-export default function PaymentSuccess({ searchParams: { amount } }: { searchParams: { amount: string } }) {
-	// jakis motywujace zdanie ze sie rozwija przyszlych sigmamale
-	//duzy przycisk powrotu do proflu lub do glownej strony /
+export default async function PaymentSuccess({
+	searchParams: { amount, idDonation },
+}: {
+	searchParams: { amount: string; idDonation: string };
+}) {
+	await donationPaidSuccessfully(idDonation);
 
 	return (
 		<section className='max-w-lg mt-6 mx-auto text-center'>
