@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { convertToSubcurrency } from '@/lib/convertToSubcurrency';
-
+import { donationPaidSuccessfully } from '@/actions/donationActions';
 
 type CheckoutProps = {
 	amount: number;
-
+	idDonation: string;
 };
 
-export default function CheckoutPage({ amount }: CheckoutProps) {
+export default function CheckoutPage({ amount, idDonation }: CheckoutProps) {
 	const stripe = useStripe();
 	const elements = useElements();
 
@@ -51,18 +51,12 @@ export default function CheckoutPage({ amount }: CheckoutProps) {
 			elements,
 			clientSecret,
 			confirmParams: {
-				return_url: `http://www.localhost:3000/payment-success?amount=${amount}`,
+				return_url: `http://www.localhost:3000/payment-success?amount=${amount}&idDonation=${idDonation}`,
 			},
 		});
 
 		if (error) {
-			// This point is only reached if there's an immediate error when
-			// confirming the payment. Show the error to your customer (for example, payment details incomplete)
 			setErrorMessage(error.message);
-		} else {
-			//set payment true
-			// The payment UI automatically closes with a success animation.
-			// Your customer is redirected to your `return_url`.
 		}
 
 		setLoading(false);
