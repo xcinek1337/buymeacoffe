@@ -1,6 +1,7 @@
 'use server';
 
 import DonationForm from '@/components/DonationForm';
+import { Donation, DonationModel } from '@/models/Donation';
 import { ProfileInfo, ProfileInfoModel } from '@/models/ProfileInfo';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,9 +12,16 @@ type Props = {
 };
 export default async function SingleProfilePage({ params }: Props) {
 	const username = params.username;
-	
+
 	const profileInfoDoc: ProfileInfo | null = await ProfileInfoModel.findOne({ username });
 
+	let donationList: Donation[] = [];
+	if (profileInfoDoc) {
+		donationList = await DonationModel.find({
+			donateOwner: profileInfoDoc.email,
+			paid: true,
+		}).exec();
+	}
 	if (!profileInfoDoc) {
 		return <div>404 - profile not found</div>;
 	}
@@ -55,7 +63,24 @@ export default async function SingleProfilePage({ params }: Props) {
 						<p>{profileInfoDoc.bio}</p>
 						<hr className='my-4' />
 						<h3 className='font-semibold'>Recent supporeters</h3>
-						<p>no recent donations</p>
+						{!donationList && <p>no recent donations</p>}
+						{donationList && (
+							<ul className='p-4 flex flex-col gap-2'>
+								{donationList.map((d, i) => (
+									<li
+										className='border-b-2 border-yellow-300 flex flex-col gap-2'
+										key={i}
+									>
+										{d.message && <p className='font-mono'>{d.message}</p>}
+										<div className='flex justify-end items-center p-2'>
+											<h4 className='font-bold mr-1'>{d.name} </h4>
+											<span className='font-bold font-mono'> {d.amount}x </span>
+											<FontAwesomeIcon size={'xs'} icon={faCoffee} />
+										</div>
+									</li>
+								))}
+							</ul>
+						)}
 					</div>
 					<div className='bg-white rounded-xl p-4 shadow-sm'>
 						<DonationForm email={profileInfoDoc.email} />
