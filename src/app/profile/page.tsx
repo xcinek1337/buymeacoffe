@@ -10,7 +10,12 @@ import { getServerSession } from 'next-auth';
 export default async function ProfilePage() {
 	const session = await getServerSession(authOptions);
 	if (!session || !session.user?.email) {
-		return 'not logged in';
+		return (
+			<section className='text-center'>
+				<h1 className='font-bold text-4xl my-6'>Log in first</h1>
+				<p className='text-lg'>Or sign up, and give them a way to support your work</p>
+			</section>
+		)
 	}
 
 	const email = session.user?.email;
