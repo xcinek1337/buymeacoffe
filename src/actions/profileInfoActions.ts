@@ -14,14 +14,20 @@ export async function saveProfile(formData: FormData) {
 
 	const { username, displayName, bio, coverUrl, avatarUrl } = Object.fromEntries(formData);
 
-	const profileInfoDoc = await ProfileInfoModel.findOne({ email });
+	try {
+		let profileInfoDoc = await ProfileInfoModel.findOne({ email });
 
-	if (profileInfoDoc) {
-		profileInfoDoc.set({ username, displayName, bio, coverUrl, avatarUrl, donations: ['haha'] });
-		await profileInfoDoc.save();
-	} else {
-		await ProfileInfoModel.create({ username, displayName, bio, email, coverUrl, avatarUrl, donations: ['kkkk'] });
+		if (profileInfoDoc) {
+			profileInfoDoc.set({ username, displayName, bio, coverUrl, avatarUrl });
+			await profileInfoDoc.save();
+		} else {
+			await ProfileInfoModel.create({ username, displayName, bio, email, coverUrl, avatarUrl });
+		}
+
+		return true;
+	} catch (error) {
+		console.error('Error saving profile:', error);
+		return false;
 	}
-
-	return true;
 }
+
