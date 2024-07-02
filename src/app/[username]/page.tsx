@@ -66,7 +66,7 @@ export default async function SingleProfilePage({ params }: Props) {
 						{!donationList && <p>no recent donations</p>}
 						{donationList && (
 							<ul className='p-4 flex flex-col gap-2'>
-								{donationList.map((d, i) => (
+								{donationList.splice(-3).map((d, i) => (
 									<li
 										className='border-b-2 border-yellow-300 flex flex-col gap-2'
 										key={i}
@@ -82,7 +82,7 @@ export default async function SingleProfilePage({ params }: Props) {
 							</ul>
 						)}
 					</div>
-					<div className='bg-white rounded-xl p-4 shadow-sm'>
+					<div className='bg-white rounded-xl p-4 max-h-72 shadow-sm'>
 						<DonationForm email={profileInfoDoc.email} />
 					</div>
 				</div>
